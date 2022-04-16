@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns="" lang="en">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,12 @@
     <th:block th:each="msg : ${messages}">
         <h1 th:text="${msg}"></h1>
     </th:block>
+    <p>
+        <a href="/user"><strong>User list</strong></a>
+    </p>
+    <p>
+        <a href="/add"><strong>Add new User</strong></a>
+    </p>
 </div>
 </body>
 </html>

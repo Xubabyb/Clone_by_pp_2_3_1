@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+<h1>User search result by ID</h1>
+<div th:object="${user}" class="flex-box">
+    <p><b>Id:</b><span th:utext="${user.id}"></span> </p>
+    <p><b>First name:</b><span th:utext="${user.firstName}"></span> </p>
+    <p><b>Last name:</b><span th:utext="${user.lastName}"></span> </p>
+    <p><b>Email:</b><span th:utext="${user.email}"></span> </p>
+</div>
+<h2>Update User</h2>
+<div>
+    <form method="post" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
+
+        <p><b>User Id:</b><span th:utext="${user.id}"></span></p>
+
+        <p><label for="firstName">Update first name: </label><br>
+
+            <input type="text" th:field="*{firstName}" id="firstName"></p>
+
+        <p><label for="lastName">Update last name: </label><br>
+            <input type="text" th:field="*{lastName}" id="lastName"></p>
+
+        <p><label for="email">Update email: </label><br>
+            <input type="text" th:field="*{email}" id="email"></p>
+        <p>
+            <input type="submit" value="Update">
+        </p>
+    </form>
+    <p>
+        <a href="/user"><strong>User list</strong></a>
+    </p>
+</div>
+</body>
+</html>
