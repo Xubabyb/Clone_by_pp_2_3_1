@@ -30,6 +30,13 @@ public class UserController {
         return "/index";
     }
 
+    //Delete
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id){
+        userService.removeUserById(id);
+        return "redirect:/user";
+    }
+
     //Read
     @GetMapping("/user")
     public String getUserList(Model model, @RequestParam(value = "count", required = false) Integer count) {
