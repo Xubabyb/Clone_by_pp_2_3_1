@@ -19,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    //Start page Index
     @GetMapping("/")
     public String printWelcome(ModelMap model) {
         List<String> messages = new ArrayList<>();
@@ -29,21 +30,30 @@ public class UserController {
         return "/index";
     }
 
-    @GetMapping("/list")
+    //Read
+    @GetMapping("/user")
     public String getUserList(Model model, @RequestParam(value = "count", required = false) Integer count) {
         model.addAttribute("users", userService.listUsers(count));
-        return "/user";
+        return "users";
     }
 
+    //Update User
     @GetMapping("/user/{id}")
-    public String getUserById(Model model, @PathVariable("id") int id) {
-        model.addAttribute("users", userService.getUserById(id));
-        return "/user";
+    public String updateUser(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "update_form";
     }
 
+    @PostMapping("{id}")
+    public String update(@ModelAttribute(name = "user") User user) {
+        userService.updateUser(user);
+        return "user";
+    }
+
+    //Create new User
     @GetMapping("/add")
     public String getForm() {
-        return "/registry";
+        return "add_form";
     }
 
     @PostMapping("/add")
