@@ -6,7 +6,6 @@ import web.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -35,11 +34,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> listUsers(Integer count) {
-        List<User> list = entityManager.createQuery("from User", User.class).getResultList();
-        if (count != null && count <= list.size() && count >= 0) {
-            return list.stream().limit(count).collect(Collectors.toList());
-        }
-        return list;
+    public List<User> getList() {
+        return entityManager.createQuery("from User", User.class).getResultList();
     }
 }

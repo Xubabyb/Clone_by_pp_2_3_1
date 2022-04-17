@@ -2,15 +2,12 @@ package web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -19,54 +16,45 @@ public class UserController {
         this.userService = userService;
     }
 
-    //Start page Index
-    @GetMapping("/")
-    public String printWelcome(ModelMap model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("I'm BD with user");
-        messages.add("1.0 version by apr'22 ");
-        model.addAttribute("messages", messages);
-        return "/index";
+    @GetMapping()
+    public String index(Model model) {
+        model.addAttribute("users", userService.index());
+        return "users/index";
     }
 
-    //Delete
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id){
-        userService.removeUserById(id);
-        return "redirect:/user";
-    }
-
-    //Read
-    @GetMapping("/user")
-    public String getUserList(Model model, @RequestParam(value = "count", required = false) Integer count) {
-        model.addAttribute("users", userService.listUsers(count));
-        return "users";
-    }
-
-    //Update User
-    @GetMapping("/user/{id}")
-    public String updateUser(Model model, @PathVariable("id") int id) {
+    @GetMapping("/{id}")
+    public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "update_form";
+        return "users/show";
     }
 
-    @PostMapping("{id}")
-    public String update(@ModelAttribute(name = "user") User user) {
-        userService.updateUser(user);
-        return "user";
+    @GetMapping("/new")
+    public String newUser(@ModelAttribute("user") User user) { //тут кладем в форму нового User, либо через @ModelAttribute
+        return "users/new";                                  //либо через Model model и  добавляя в атрибуты new User
     }
 
-    //Create new User
-    @GetMapping("/add")
-    public String getForm() {
-        return "add_form";
-    }
-
-    @PostMapping("/add")
-    public String addUser(@ModelAttribute(name = "user") User user) {
+    @PostMapping()
+    public String create(@ModelAttribute("user") User user) {
         userService.addUser(user);
-        return "redirect:/";
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "users/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
+        return "redirect:/users";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        userService.removeUserById(id);
+        return "redirect:/users";
     }
 
 }

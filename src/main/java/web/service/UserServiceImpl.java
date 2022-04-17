@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> listUsers(Integer count) {
-        return userDao.listUsers(count);
+    public List<User> index() {
+        return userDao.getList();
     }
 }
